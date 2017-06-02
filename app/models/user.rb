@@ -6,18 +6,17 @@ class User < ApplicationRecord
   presence: true,
   uniqueness: { case_sensitive: false }
 
-  validates :password, presence: true, length: { minimum: 6 }
+  #validates :password, presence: true, length: { minimum: 6 }
 
+  validates :password, presence: true, length: { minimum: 6 }
   validates :email,
   presence:  true,
   uniqueness: { case_sensitive: false },
   length: { minimum: 3, maximum: 254 }
 
 
-
-
   devise :database_authenticatable, :registerable,
-  :recoverable, :rememberable, :trackable, :validatable
+  :recoverable, :rememberable, :trackable, :validatable, :confirmable
 
   # Virtual attribute for authenticating by either username or email
   # This is in addition to a real persisted field like 'username'

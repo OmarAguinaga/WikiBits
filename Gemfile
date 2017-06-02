@@ -23,6 +23,7 @@ gem 'factory_girl_rails', '~> 4.0'
 gem 'devise'
 gem 'faker', '~> 1.7', '>= 1.7.3'
 gem 'nyan-cat-formatter', '~> 0.12.0'
+gem 'capybara'
 
 group :production do
   gem 'pg'

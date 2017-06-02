@@ -12,24 +12,11 @@
 
 <body>
   <div class="container-fluid">
-    <nav class="navbar navbar-default">
-
-      <div class="container">
-        <div class="navbar-header">
-          <a class="navbar-brand" href="#">
-            <%= image_tag("logos/long-logo.svg") %>
-          </a>
-        </div>
-
-        <ul class="nav navbar-nav navbar-right">
-          <li><a class="gray" href="#">Write a wiki</a></li>
-          <li><a href="#">Sign in | Sign up</a></li>
-        </ul>
-
-      </div>
-    </nav>
+    <%= render 'layouts/nav' %>
 
     <div class="container">
+      <p class="notice"><%= notice %></p>
+      <p class="alert"><%= alert %></p>
       <%= yield %>
     </div>
   </div>

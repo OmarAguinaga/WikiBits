@@ -10,7 +10,6 @@ RSpec.describe User, type: :model do
   it { is_expected.to allow_value('user.wiki@mail.com').for(:email)}
 
   it { is_expected.to validate_length_of(:password)}
-  #it { is_expected.to have_secure_password }
   it { is_expected.to validate_length_of(:password).is_at_least(6)}
 
   it { is_expected.to validate_presence_of(:username) }
@@ -24,9 +23,15 @@ RSpec.describe User, type: :model do
 
   describe 'Invalid user' do
     let(:user_with_invalid_mail) {build(:user, email:'')}
+    let(:user_with_invalid_name) {build(:user, username:'')}
+
 
     it "should be an invalid user due to blank email" do
       expect(user_with_invalid_mail).to_not be_valid
+    end
+
+    it "should be an invalid user due to blank email" do
+      expect(user_with_invalid_name).to_not be_valid
     end
   end
 end
