@@ -12,6 +12,7 @@
  *
  *= require_tree .
  *= require_self
+ *= require my_styles
  */
 
 $green-color: #7ECCBE;
@@ -46,4 +47,9 @@ $navbar-default-link-color: $blue-color;
 
 .navbar > .container{
     margin-top: -30px;
+}
+
+
+.checkbox input[type="checkbox"] {
+  margin-left: 10px;
 }
