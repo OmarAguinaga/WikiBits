@@ -1,0 +1,45 @@
+<%= form_for [wiki] do |f| %>
+<% if wiki.errors.any? %>
+
+<div class="alert alert-danger">
+
+  <h4><%= pluralize(wiki.errors.count, "error") %>.</h4>
+  <ul>
+    <% wiki.errors.full_messages.each do |msg| %>
+    <li><%= msg %></li>
+    <% end %>
+  </ul>
+</div>
+<% end %>
+
+<%= form_group_tag(wiki.errors[:title]) do %>
+<%= f.label :title %>
+<%= f.text_field :title, class: 'form-control', placeholder: "Enter wiki title" %>
+
+<% end %>
+
+<%= form_group_tag(wiki.errors[:body]) do %>
+<%= f.label :body %>
+<%= f.text_area :body, rows: 8, class: 'form-control', placeholder: "Enter wiki body" %>
+<% end %>
+<div class="markdown-hints">
+  <div class="markdown-bold">
+      **bold**
+  </div>
+  <div class="markdown-italic">
+    _italic_
+  </div>
+  <div class="mark-code">
+      `code`
+  </div>
+  <div class="markdown-quote">
+        &gt;quote
+  </div>
+  <div class="markdown-bullet">
+      • - bullet list
+  </div>
+</div>
+<div class="form-group">
+  <%= f.submit "Save", class: 'btn btn-success save-wiki' %>
+</div>
+<% end %>

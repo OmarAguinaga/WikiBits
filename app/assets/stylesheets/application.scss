@@ -13,6 +13,7 @@
  *= require_tree .
  *= require_self
  *= require my_styles
+ *= require wikis/wiki
  */
 
 $green-color: #7ECCBE;
@@ -27,6 +28,11 @@ $navbar-border-radius: none;
 $navbar-default-bg: white;
 $font-family-base: 'Source Sans Pro', sans-serif;
 $navbar-default-link-color: $blue-color;
+
+
+// Buttons
+$btn-success-bg: $green-color;
+$btn-danger-bg: $red-color;
 
 
 @import "bootstrap-sprockets";
@@ -48,8 +54,6 @@ $navbar-default-link-color: $blue-color;
 .navbar > .container{
     margin-top: -30px;
 }
-
-
 .checkbox input[type="checkbox"] {
   margin-left: 10px;
 }
