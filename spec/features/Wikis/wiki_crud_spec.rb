@@ -1,63 +1,81 @@
 require 'rails_helper.rb'
 
-feature 'Creating a wiki' do
+describe 'Creating Wiki CRUD with logged in user' do
   let(:sentence){ Faker::Lorem.sentence }
   let(:updated_sentence){ Faker::Lorem.sentence }
-  let(:confirmed_user){ create :confirmed_user}
 
-  scenario 'can create a wiki after loggin' do
-    login confirmed_user.email, confirmed_user.password
+  before do
+    user = FactoryGirl.create(:user)
+    user.confirm
+    login_as(user, :scope => :user)
 
-    expect(current_path).to eq "/"
-    expect(page).to have_content "Signed in successfully"
-    expect(page).to have_content "Hello, #{confirmed_user.username}"
-
+    wiki = FactoryGirl.create(:wiki, title: sentence)
+  end
+  it "Creates wiki" do
     visit '/'
     click_link 'Write a wiki'
     expect(current_path).to eq new_wiki_path
     fill_in 'Title', with: sentence
     fill_in 'Body', with: Faker::Lorem.paragraph
     click_button 'Save'
-    expect(current_path).to eq "/wikis/1"
+    expect(current_path).to eq "/wikis/2"
     expect(page).to have_content sentence
+  end
 
-
-    #Show wiki
-    visit '/wikis'
-    click_link sentence
+  it "Shows Wikis" do
+    visit_wiki
     expect(current_path).to eq "/wikis/1"
+  end
 
-
-    #Edit Wiki
+  it "Edits Wikis" do
+    visit_wiki
     click_link 'Edit'
     expect(current_path).to eq "/wikis/1/edit"
     fill_in 'Title', with: updated_sentence
     click_button 'Save'
     expect(page).to have_content updated_sentence
-
-    #Delete Wiki
-    click_link "Delete Wiki"
-
   end
 
-  scenario "gets redirected to login page in not logged in" do
+  it "Deletes Wiki" do
+    visit_wiki
+    click_link "Delete Wiki"
+    expect(page).to have_content "\"#{sentence}\"  was deleted successfully."
+  end
+end
+
+describe "Wiki CRUD with Not Logged in user" do
+  let(:sentence){ Faker::Lorem.sentence }
+  let(:updated_sentence){ Faker::Lorem.sentence }
+
+  before do
+    wiki = FactoryGirl.create(:wiki, title: sentence)
+  end
+
+  it "gets redirected to login page if not logged in" do
     visit '/'
     click_link 'Write a wiki'
     expect(current_path).to eq new_user_session_path
   end
 
-
-
-
-  private
-
-  def login(email, password)
-    visit "/"
-    click_link "Log in"
-    expect(page).to have_css("h2", text: "Log in")
-    expect(current_path).to eq(new_user_session_path)
-    fill_in "Login", with: email
-    fill_in "Password", with: password
-    click_button "Log in"
+  it "Should be able to Shows Wikis" do
+    visit_wiki
+    expect(current_path).to eq "/wikis/1"
   end
+
+  it "Should not show Edits Wikis link" do
+    visit_wiki
+    page.should have_no_content('Edit')
+  end
+
+  it "Should not show Delete Wikis link" do
+    visit_wiki
+    page.should have_no_content('Delete')
+  end
+end
+
+
+private
+def visit_wiki
+  visit '/wikis'
+  click_link sentence
 end

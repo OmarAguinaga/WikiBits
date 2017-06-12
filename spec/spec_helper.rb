@@ -17,6 +17,7 @@
 # users commonly want.
 #
 # See http://rubydoc.info/gems/rspec-core/RSpec/Core/Configuration
+#
 require "email_spec"
 require "email_spec/rspec"
 RSpec.configure do |config|
