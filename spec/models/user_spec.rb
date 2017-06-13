@@ -35,4 +35,13 @@ RSpec.describe User, type: :model do
       expect(user_with_invalid_name).to_not be_valid
     end
   end
+
+  describe "After creation" do
+    it "Send confirmation emai" do
+      new_user = FactoryGirl.build :user
+      expect { user.save }.to change(
+      Devise.mailer.deliveries, :count
+      ).by(1)
+    end
+  end
 end
