@@ -8,8 +8,8 @@
     <ul class="nav navbar-nav navbar-right">new_wiki_path
       <li>
         <%=
-        link_to_if(user_signed_in?, "Write a wiki",  new_wiki_path, :class => 'navbar-link gray' ) do
-          link_to("Write a wiki",new_user_session_path, :class => 'navbar-link gray')
+        link_to_if(user_signed_in?, "All topics",  topics_path, :class => 'navbar-link gray' ) do
+          link_to("All topics",new_user_session_path, :class => 'navbar-link gray')
         end
         %>
       </li>

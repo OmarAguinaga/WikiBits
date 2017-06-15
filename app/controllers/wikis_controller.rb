@@ -8,22 +8,26 @@ class WikisController < ApplicationController
   end
 
   def new
+    @topic = Topic.find(params[:topic_id])
     @wiki = Wiki.new
   end
 
   def create
-    @wiki = Wiki.new(wiki_params)
+
+    @topic = Topic.find(params[:topic_id])
+    @wiki = @topic.wikis.build(wiki_params)
     @wiki.user = current_user
 
 
     if @wiki.save
       flash[:notice] = "Wiki was saved."
-      redirect_to [@wiki]
+      redirect_to [@topic, @wiki]
     else
       flash.now[:alert] = "There was an error saving the wiki. Please try again."
       render :new
     end
   end
+
 
   def edit
     @wiki = Wiki.find(params[:id])
@@ -36,7 +40,7 @@ class WikisController < ApplicationController
 
     if @wiki.save
       flash[:notice] = "Wiki was updated."
-      redirect_to [@wiki]
+      redirect_to [@wiki.topic, @wiki]
     else
       flash.now[:alert] = "There was an error saving the wiki. Please try again."
       render :edit
@@ -48,7 +52,7 @@ class WikisController < ApplicationController
 
     if @wiki.destroy
       flash[:notice] = "\"#{@wiki.title}\" was deleted successfully."
-      redirect_to root_path
+      redirect_to @wiki.topic
     else
       flash.now[:alert] = "There was an error deleting the wiki."
       render :show
