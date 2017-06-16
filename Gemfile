@@ -27,10 +27,11 @@ gem 'nyan-cat-formatter'
 gem 'capybara'
 gem 'email_spec'
 gem 'selenium-webdriver'
+gem 'webpacker', '~> 2.0'
 
 group :production do
   gem 'pg'
-  
+
 end
 
 group :development, :test do
