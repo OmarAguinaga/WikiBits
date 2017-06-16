@@ -1,6 +1,7 @@
 class User < ApplicationRecord
 
   has_many :wikis, dependent: :destroy
+  before_save { self.role ||= :standar }
 
   # Include default devise modules. Others available are:
   # :confirmable, :lockable, :timeoutable and :omniauthable
@@ -17,6 +18,7 @@ class User < ApplicationRecord
   uniqueness: { case_sensitive: false },
   length: { minimum: 3, maximum: 254 }
 
+  enum role: [:standar, :premium, :admin]
 
   devise :database_authenticatable, :registerable,
   :recoverable, :rememberable, :trackable, :validatable, :confirmable

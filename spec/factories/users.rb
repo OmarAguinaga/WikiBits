@@ -3,6 +3,7 @@ FactoryGirl.define do
     email {Faker::Internet.email}
     username {Faker::Internet.user_name}
     password {Faker::Internet.password}
+    confirmed_at          Time.now
   end
 
   factory :confirmed_user, :parent => :user do
