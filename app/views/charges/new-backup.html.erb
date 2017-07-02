@@ -1,0 +1,41 @@
+<%= form_tag charges_path, method: 'post', id: 'payment-form' do %>
+
+<div class="col-md-4"></div>
+<div class="col-md-4">
+  <div class="alert alert-danger" role="alert">
+    <span class="payment-errors"></span>
+  </div>
+
+  <h2 class="text-center">
+    You Will Pay
+    <%= @amount / 100.0 %>
+  </h2>
+  <hr/>
+  <div class="form-row input-group">
+    <span class="input-group-addon" aria-hidden="true">
+      <span class="glyphicon glyphicon-credit-card" aria-hidden="true"></span>
+    </span>
+    <input class="form-control" type="text" size="20" placeholder="Credit Card" data-stripe="number"/>
+  </div>
+  <br/>
+  <div class="form-row input-group">
+    <span class="input-group-addon" aria-hidden="true">
+      <span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span>
+    </span>
+    <input class="form-control" type="text" size="4" placeholder="CVC" data-stripe="cvc"/>
+  </div>
+  <br/>
+  <div class="form-row input-group">
+    <span class="input-group-addon" aria-hidden="true">
+      <span class="glyphicon glyphicon-calendar" aria-hidden="true"></span>
+    </span>
+    <input class="form-control" type="text" placeholder="MM" size="2" data-stripe="exp-month"/>
+    <input class="form-control" type="text" size="2" placeholder="YY" data-stripe="exp-year"/>
+  </div>
+  <br/>
+  <hr/>
+
+  <button type="submit" class="btn btn-primary center-block">Submit Payment</button>
+</div>
+<div class="col-md-4"></div>
+<% end %>

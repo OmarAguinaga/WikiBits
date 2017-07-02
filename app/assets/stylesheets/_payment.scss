@@ -1,0 +1,21 @@
+.navbar-default .navbar-nav > li > a.go-pro {
+  color: $green-color;
+  font-size: 1.2em;
+}
+
+.navbar-default .navbar-nav > li > a.cancel {
+  color: $yellow-color;
+}
+
+div.panel-heading > h2 {
+  color: white;
+}
+
+.panel-default > div.panel-heading {
+  background-color: $purple-color;
+}
+
+.glyphicon-ok:before {
+  color: $green-color;
+  padding-right: 1em;
+}

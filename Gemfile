@@ -28,6 +28,7 @@ gem 'capybara'
 gem 'email_spec'
 gem 'selenium-webdriver'
 gem 'webpacker', '~> 2.0'
+gem 'stripe'
 
 group :production do
   gem 'pg'

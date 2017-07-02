@@ -1,34 +1,40 @@
 <!DOCTYPE html>
 <html>
-<head>
-  <title>Wikibits</title>
-  <%= csrf_meta_tags %>
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-  <%= stylesheet_link_tag    'application', media: 'all', 'data-turbolinks-track': 'reload' %>
-  <%= javascript_include_tag 'application', 'data-turbolinks-track': 'reload' %>
-  <link href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400" rel="stylesheet">
-</head>
+  <head>
+    <title>Wikibits</title>
+    <%= csrf_meta_tags %>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <%= stylesheet_link_tag    'application', media: 'all', 'data-turbolinks-track': 'reload' %>
+    <%= javascript_include_tag 'application', 'data-turbolinks-track': 'reload' %>
+    <link href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400" rel="stylesheet">
+  </head>
 
+  <body>
+    <div class="container-fluid">
+      <%= render 'layouts/nav' %>
 
-<body>
-  <div class="container-fluid">
-    <%= render 'layouts/nav' %>
+      <% if flash[:notice] %>
+      <div class="alert alert-success">
+        <button type="button" class="close" data-dismiss="alert">&times;</button>
+        <%= flash[:notice] %>
+      </div>
+      <% elsif flash[:alert] %>
+      <div class="alert alert-warning">
+        <button type="button" class="close" data-dismiss="alert">&times;</button>
+        <%= flash[:alert] %>
+      </div>
+      <% end %>
 
-    <% if flash[:notice] %>
-    <div class="alert alert-success">
-      <button type="button" class="close" data-dismiss="alert">&times;</button>
-      <%= flash[:notice] %>
+      <div class="container">
+        <%= yield %>
+      </div>
     </div>
-    <% elsif flash[:alert] %>
-    <div class="alert alert-warning">
-      <button type="button" class="close" data-dismiss="alert">&times;</button>
-      <%= flash[:alert] %>
-    </div>
-    <% end %>
 
-    <div class="container">
-      <%= yield %>
-    </div>
-  </div>
-</body>
+    <script type="text/javascript" src="https://js.stripe.com/v2/"></script>
+
+    <script type="text/javascript">
+      Stripe.setPublishableKey('<%= Rails.configuration.stripe[:publishable_key] %>');
+    </script>
+
+  </body>
 </html>
