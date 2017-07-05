@@ -12,7 +12,8 @@
   User.create!(
   email:     Faker::Internet.email,
   username:  Faker::Internet.user_name,
-  password:  Faker::Internet.password
+  password:  Faker::Internet.password,
+  confirmed_at:          Time.now
   )
 end
 users = User.all
@@ -22,8 +23,8 @@ users = User.all
   Wiki.create!(
   topic:     topics.sample,
   user:      users.sample,
-  title:     Faker::Lorem.sentence,
-  body:      Faker::Lorem.paragraph,
+  title: Faker::Lorem.sentence,
+  body:  RandomData.random_md,
   private:   false
   )
 end
@@ -34,14 +35,16 @@ wikis = Wiki.all
    username:     'Admin User',
    email:    'admin@user.com',
    password: 'helloworld',
-   role:     'admin'
+   role:     'admin',
+   confirmed_at:          Time.now
  )
 
  # Create a standar user
  standar = User.create!(
    username:     'Standar User',
    email:    'standar@user.com',
-   password: 'helloworld'
+   password: 'helloworld',
+   confirmed_at:          Time.now
  )
 
  # Create a premium user
@@ -49,7 +52,16 @@ wikis = Wiki.all
    username:     'Premium User',
    email:    'premium@user.com',
    password: 'helloworld',
-   role:     'premium'
+   role:     'premium',
+   confirmed_at:          Time.now
+ )
+
+ me = User.create!(
+   username:     'Omar Aguinaga',
+   email:    'omar.aguinaga94@gmail.com',
+   password: 'password',
+   role:     'standar',
+   confirmed_at:          Time.now
  )
 
 puts "Seed finished"

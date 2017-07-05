@@ -1,13 +1,13 @@
 module RandomData
 
-   def self.random_wiki
-     wiki = []
-     rand(4..6).times do
-       wiki << Faker::Lorem.paragraph
-     end
-
-     wiki.join(" ")
-   end
-
-
- end
+    def self.random_md
+        md = []
+        md << Faker::Markdown.headers
+        md << Faker::Markdown.block_code
+        rand(4..10).times do
+            md << Faker::Markdown.random
+        end
+        
+        md.join("\n")
+    end
+end

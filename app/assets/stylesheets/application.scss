@@ -37,6 +37,7 @@ $btn-danger-bg: $red-color;
 
 @import "bootstrap-sprockets";
 @import "bootstrap";
+@import 'pygments';
 
 .navbar-right > a{
   font-weight: 400;

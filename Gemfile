@@ -5,7 +5,7 @@ git_source(:github) do |repo_name|
   "https://github.com/#{repo_name}.git"
 end
 
-ruby '2.4.0'
+ruby '2.3.0'
 # Bundle edge Rails instead: gem 'rails', github: 'rails/rails'
 gem 'rails', '~> 5.1', '>= 5.1.1'
 
@@ -22,12 +22,14 @@ gem 'bcrypt'
 gem 'figaro', '1.0'
 gem 'factory_girl_rails', '~> 4.0'
 gem 'devise'
-gem 'faker', '~> 1.7', '>= 1.7.3'
+gem 'faker', github: 'stympy/faker'
 gem 'nyan-cat-formatter'
 gem 'capybara'
 gem 'email_spec'
 gem 'selenium-webdriver'
 gem 'webpacker', '~> 2.0'
+gem 'pygments.rb', '~> 0.6.3'
+gem 'redcarpet', '~> 3.4'
 
 group :production do
   gem 'pg'

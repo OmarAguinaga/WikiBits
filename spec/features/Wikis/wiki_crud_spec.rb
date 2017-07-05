@@ -3,7 +3,6 @@ require 'rails_helper.rb'
 describe 'Creating Wiki CRUD with logged in user' do
   let(:sentence){ Faker::Lorem.sentence }
   let(:updated_sentence){ Faker::Lorem.sentence }
-
   let(:topic){ FactoryGirl.create(:topic)}
 
 
@@ -24,19 +23,24 @@ describe 'Creating Wiki CRUD with logged in user' do
     it "Creates wiki" do
       visit topics_path
       click_link topic.name
-      expect(current_path).to eq topic_path(topic.id)
+      expect(page).to have_current_path(topic_path(topic.id))
       click_link 'New Wiki'
-      expect(current_path).to eq  new_topic_wiki_path(topic)
+      expect(page).to have_current_path(new_topic_wiki_path(topic))
       fill_in 'Title', with: sentence
       fill_in 'Body', with: Faker::Lorem.paragraph
       click_button 'Save'
-      expect(current_path).to eq topic_wiki_path(@wiki.topic, 2)
+      expect(page).to have_current_path(topic_wiki_path(@wiki.topic, 2))
       expect(page).to have_content sentence
     end
 
     it "Shows Wikis" do
       visit_wiki
       expect(page).to have_content sentence
+    end
+    
+    it "Shows makdown as HTML" do
+      visit_wiki
+      expect(page).to have_css('pre')
     end
   end
 
@@ -51,17 +55,17 @@ describe 'Creating Wiki CRUD with logged in user' do
     it "#Edit" do
       visit_wiki
       click_link 'Edit'
-      expect(current_path).to eq edit_topic_wiki_path(@wiki.topic, @wiki.id)
+      expect(page).to have_current_path(edit_topic_wiki_path(@wiki.topic, @wiki.id))
       fill_in 'Title', with: updated_sentence
       click_button 'Save'
       expect(page).to have_content updated_sentence
-      expect(current_path).to eq topic_wiki_path(@wiki.topic, @wiki.id)
+      expect(page).to have_current_path(topic_wiki_path(@wiki.topic, @wiki.id))
     end
 
     it "Deletes Wiki" do
       visit_wiki
       click_link "Delete Wiki"
-      expect(current_path).to eq topic_path(topic.id)
+      expect(page).to have_current_path(topic_path(topic.id))
       expect(page).to have_content "\"#{sentence}\"  was deleted successfully."
     end
   end
@@ -75,12 +79,12 @@ describe 'Creating Wiki CRUD with logged in user' do
       visit_wiki
       expect(page).to have_no_content "Edit Wiki"
       expect(page).to have_no_content "Delete Wiki"
-      expect(current_path).to eq topic_wiki_path(@wiki.topic, @wiki.id)
+      expect(page).to have_current_path(topic_wiki_path(@wiki.topic, @wiki.id))
     end
 
     it "Does not Edits Wikis with direct path" do
       visit edit_topic_wiki_path(@wiki.topic, @wiki.id)
-      expect(current_path).to eq topic_wiki_path(@wiki.topic, @wiki.id)
+      expect(page).to have_current_path(topic_wiki_path(@wiki.topic, @wiki.id))
       expect(page).to have_content "You must be an admin to do that."
     end
   end
@@ -98,17 +102,17 @@ describe 'Creating Wiki CRUD with logged in user' do
     it "Edits Wikis" do
       visit_wiki
       click_link 'Edit'
-      expect(current_path).to eq edit_topic_wiki_path(@wiki.topic, @wiki.id)
+      expect(page).to have_current_path(edit_topic_wiki_path(@wiki.topic, @wiki.id))
       fill_in 'Title', with: updated_sentence
       click_button 'Save'
       expect(page).to have_content updated_sentence
-      expect(current_path).to eq topic_wiki_path(@wiki.topic, @wiki.id)
+      expect(page).to have_current_path(topic_wiki_path(@wiki.topic, @wiki.id))
     end
 
     it "Deletes Wiki" do
       visit_wiki
       click_link "Delete Wiki"
-      expect(current_path).to eq topic_path(topic.id)
+      expect(page).to have_current_path(topic_path(topic.id))
       expect(page).to have_content "\"#{sentence}\"  was deleted successfully."
     end
   end
@@ -123,12 +127,12 @@ describe 'Creating Wiki CRUD with logged in user' do
       visit_wiki
       expect(page).to have_no_content "Edit Wiki"
       expect(page).to have_no_content "Delete Wiki"
-      expect(current_path).to eq topic_wiki_path(@wiki.topic, @wiki.id)
+      expect(page).to have_current_path(topic_wiki_path(@wiki.topic, @wiki.id))
     end
 
     it "Does not Edits Wikis with direct path" do
       visit edit_topic_wiki_path(@wiki.topic, @wiki.id)
-      expect(current_path).to eq topic_wiki_path(@wiki.topic, @wiki.id)
+      expect(page).to have_current_path(topic_wiki_path(@wiki.topic, @wiki.id))
       expect(page).to have_content "You must be an admin to do that."
     end
   end
@@ -146,17 +150,17 @@ describe 'Creating Wiki CRUD with logged in user' do
     it "Edits Wikis" do
       visit_wiki
       click_link 'Edit'
-      expect(current_path).to eq edit_topic_wiki_path(@wiki.topic, @wiki.id)
+      expect(page).to have_current_path(edit_topic_wiki_path(@wiki.topic, @wiki.id))
       fill_in 'Title', with: updated_sentence
       click_button 'Save'
       expect(page).to have_content updated_sentence
-      expect(current_path).to eq topic_wiki_path(@wiki.topic, @wiki.id)
+      expect(page).to have_current_path(topic_wiki_path(@wiki.topic, @wiki.id))
     end
 
     it "Deletes Wiki" do
       visit_wiki
       click_link "Delete Wiki"
-      expect(current_path).to eq topic_path(topic.id)
+      expect(page).to have_current_path(topic_path(topic.id))
       expect(page).to have_content "\"#{sentence}\"  was deleted successfully."
     end
   end
@@ -180,12 +184,12 @@ describe "Wiki CRUD with Not Logged in user" do
   it "gets redirected to login page if not logged in" do
     visit root_path
     click_link 'All topics'
-    expect(current_path).to eq topics_path
+    expect(page).to have_current_path(topics_path)
   end
 
-  it "Should be able to Shows Wikis" do
+  it "Should be able to view Wikis" do
     visit_wiki
-    expect(current_path).to eq topic_wiki_path(@wiki.topic, @wiki.id)
+    expect(page).to have_current_path(topic_wiki_path(@wiki.topic, @wiki.id))
   end
 
   it "Should not show Edits Wikis link" do
@@ -205,5 +209,5 @@ def visit_wiki
   visit topics_path
   click_link topic.name
   click_link sentence
-  expect(current_path).to eq topic_wiki_path(@wiki.topic, @wiki.id)
+  expect(page).to have_current_path(topic_wiki_path(@wiki.topic, @wiki.id))
 end
