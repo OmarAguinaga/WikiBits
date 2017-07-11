@@ -39,6 +39,17 @@
       • - bullet list
   </div>
 </div>
+
+
+<% if current_user.admin? || current_user.premium? -%>
+  <div class="form-group">
+    <%= f.label :private, class: 'checkbox' do %>
+      Private wiki <%= f.check_box :private, class: "remember-checkbox"  %>
+    <% end %>
+  </div>
+<% end -%>
+
+
 <div class="form-group">
   <%= f.submit "Save", class: 'btn btn-success save-wiki' %>
 </div>
