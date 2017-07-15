@@ -40,7 +40,9 @@ class ChargesController < ApplicationController
     subscription.delete(:at_period_end => true)
 
     downgrade_user(current_user)
+    current_user_downgrade_wikis
     flash[:notice] = "Your subscription ahs been succesfully cancelled, #{current_user.email}! We will be waiting whenever you are ready to come back!"
+    
     redirect_to topics_path
   end
 
@@ -61,6 +63,10 @@ class ChargesController < ApplicationController
   def downgrade_user(user)
     user.update_attribute :role, "standar"
   end
+  
+  def current_user_downgrade_wikis
+    current_user.wikis.where(private: true).update_all(private: false)
+  end 
 
   def set_description
     @description = "Montly Subscription"

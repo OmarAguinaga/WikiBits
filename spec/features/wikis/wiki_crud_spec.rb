@@ -49,7 +49,7 @@ describe 'Creating Wiki CRUD with logged in user' do
       expect(page).to have_css('pre')
     end
     
-    it 'is not able to create provate wikis' do
+    it 'is not able to create private wikis' do
       visit_wiki
       expect(page).to have_no_css('.checkbox')
     end
@@ -102,6 +102,12 @@ describe 'Creating Wiki CRUD with logged in user' do
       visit edit_topic_wiki_path(@wiki.topic, @wiki.id)
       expect(page).to have_current_path(topic_wiki_path(@wiki.topic, @wiki.id))
       expect(page).to have_content "You must be an admin to do that."
+    end
+    
+    it 'is not able to visit private wikis' do
+      visit topics_path
+      click_link private_topic.name
+      expect(page).to have_no_content private_sentence
     end
   end
 

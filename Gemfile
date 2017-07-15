@@ -31,6 +31,7 @@ gem 'webpacker', '~> 2.0'
 gem 'pygments.rb', '~> 0.6.3'
 gem 'redcarpet', '~> 3.4'
 gem 'stripe'
+gem "pundit"
 
 group :production do
   gem 'pg'

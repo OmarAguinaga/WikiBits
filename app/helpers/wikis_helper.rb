@@ -3,6 +3,12 @@ module WikisHelper
     current_user && (current_user == wiki.user || current_user.admin?)
   end
   
+  #def restrict_private_wikis(wi)
+   # if wiki.private && wiki.user_id === current_user.id || !wiki.private || current_user.role === 'admin'
+    #  return true
+    #end
+  #end
+  
   class HTMLwithPygments < Redcarpet::Render::HTML
     def block_code(code, language)
       Pygments.highlight(code, lexer:language)
