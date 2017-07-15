@@ -1,7 +1,7 @@
 class WikisController < ApplicationController
-  
-  #FIXME    the is a problem with authorization and authentication 
-  before_action :require_sign_in
+
+  #FIXME    the is a problem with authorization and authentication
+  before_action :require_sign_in, except: [:index, :show]
 
   before_action :authorize_user, except: [:show, :new, :create]
 

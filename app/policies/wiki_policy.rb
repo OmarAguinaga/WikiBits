@@ -7,6 +7,8 @@ class WikiPolicy < ApplicationPolicy
   end
 
   def show?
-    user.admin? || !wiki.private || wiki.private && wiki.user == user
+    if user
+      user.admin? || !wiki.private || wiki.private && wiki.user == user
+    end
   end
 end
