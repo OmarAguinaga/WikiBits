@@ -63,14 +63,6 @@ wikis = Wiki.all
    role:     'standar',
    confirmed_at:          Time.now
  )
-
- me = User.create!(
-   username:     'Omar',
-   email:    'omar.aguinaga94@gmail.com',
-   password: 'password',
-   role:     'standar'
- )
-
 puts "Seed finished"
 puts "#{Topic.count} topics created"
 puts "#{User.count} users created"
