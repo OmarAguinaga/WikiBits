@@ -9,13 +9,21 @@
   <div class="col-md-8">
     <p class="lead"><%= @topic.description %></p>
     <% @topic.wikis.each do |wiki| %>
+    <% if policy(wiki).show? %>
+    <%# if wiki.private && wiki.user_id === current_user.id || !wiki.private || current_user.role === 'admin'%>
     <div class="media">
       <div class="media-body">
         <h4 class="media-heading">
           <%= link_to wiki.title, topic_wiki_path(@topic, wiki) %>
         </h4>
+        <% if wiki.private %>
+        <small>
+          <span class="label label-danger">PRIVATE</span>
+        </small><% end %>
       </div>
     </div>
+    <% end %>
+    <%# end %>
     <% end %>
   </div>
   <div class="col-md-4">

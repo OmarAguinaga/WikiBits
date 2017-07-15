@@ -2,6 +2,12 @@
   <%= @wiki.title %> <br>
   <small>
     submitted <%= time_ago_in_words(@wiki.created_at) %> ago by <%= @wiki.user.username %>
+    
+    <% if @wiki.private%>
+    <h6>
+      <span class="label label-danger">PRIVATE</span>
+    </h6>
+    <% end %>
   </small>
 </h1>
 

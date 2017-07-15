@@ -2,8 +2,13 @@ require 'rails_helper.rb'
 
 describe 'Creating Wiki CRUD with logged in user' do
   let(:sentence){ Faker::Lorem.sentence }
+  let(:private_sentence){ Faker::Lorem.sentence }
   let(:updated_sentence){ Faker::Lorem.sentence }
+  let(:private_updated_sentence){ Faker::Lorem.sentence }
   let(:topic){ FactoryGirl.create(:topic)}
+  let(:private_topic){ FactoryGirl.create(:topic, name: Faker::Lorem.sentence )}
+  
+  let(:private_tag){'PRIVATE'}
 
 
   before :each do
@@ -13,6 +18,7 @@ describe 'Creating Wiki CRUD with logged in user' do
     @other_user.confirm
 
     @wiki =FactoryGirl.create(:wiki, title: sentence, topic: topic, user: @user)
+    @private_wiki =FactoryGirl.create(:wiki, title: private_sentence, topic: private_topic, user: @user, private: true)
   end
 
   context "Any logged in user" do
@@ -29,7 +35,7 @@ describe 'Creating Wiki CRUD with logged in user' do
       fill_in 'Title', with: sentence
       fill_in 'Body', with: Faker::Lorem.paragraph
       click_button 'Save'
-      expect(page).to have_current_path(topic_wiki_path(@wiki.topic, 2))
+      expect(page).to have_current_path(topic_wiki_path(@wiki.topic, 3))
       expect(page).to have_content sentence
     end
 
@@ -41,6 +47,11 @@ describe 'Creating Wiki CRUD with logged in user' do
     it "Shows makdown as HTML" do
       visit_wiki
       expect(page).to have_css('pre')
+    end
+    
+    it 'is not able to create private wikis' do
+      visit_wiki
+      expect(page).to have_no_css('.checkbox')
     end
   end
 
@@ -68,6 +79,11 @@ describe 'Creating Wiki CRUD with logged in user' do
       expect(page).to have_current_path(topic_path(topic.id))
       expect(page).to have_content "\"#{sentence}\"  was deleted successfully."
     end
+    
+    it 'is not able to create private wikis' do
+      visit_wiki
+      expect(page).to have_no_css('.checkbox')
+    end
   end
 
   context "Standar user doing CRUD on wiki the DO NOT own" do
@@ -86,6 +102,12 @@ describe 'Creating Wiki CRUD with logged in user' do
       visit edit_topic_wiki_path(@wiki.topic, @wiki.id)
       expect(page).to have_current_path(topic_wiki_path(@wiki.topic, @wiki.id))
       expect(page).to have_content "You must be an admin to do that."
+    end
+    
+    it 'is not able to visit private wikis' do
+      visit topics_path
+      click_link private_topic.name
+      expect(page).to have_no_content private_sentence
     end
   end
 
@@ -114,6 +136,20 @@ describe 'Creating Wiki CRUD with logged in user' do
       click_link "Delete Wiki"
       expect(page).to have_current_path(topic_path(topic.id))
       expect(page).to have_content "\"#{sentence}\"  was deleted successfully."
+    end
+    
+    it 'is able to create private wikis' do
+      new_wiki
+      click_link 'New Wiki'
+      expect(page).to have_current_path(new_topic_wiki_path(topic))
+      fill_in 'Title', with: sentence
+      fill_in 'Body', with: Faker::Lorem.paragraph
+      expect(page).to have_css('.checkbox')
+      check 'Private wiki'
+      click_button 'Save'
+      expect(page).to have_current_path(topic_wiki_path(@wiki.topic, 3))
+      expect(page).to have_content sentence
+      expect(page).to have_content private_tag
     end
   end
 
@@ -163,6 +199,42 @@ describe 'Creating Wiki CRUD with logged in user' do
       expect(page).to have_current_path(topic_path(topic.id))
       expect(page).to have_content "\"#{sentence}\"  was deleted successfully."
     end
+    
+    
+    #PRIVATE WIKIS
+    
+    it 'is able to create private wikis' do
+      new_wiki
+      click_link 'New Wiki'
+      expect(page).to have_current_path(new_topic_wiki_path(topic))
+      fill_in 'Title', with: sentence
+      fill_in 'Body', with: Faker::Lorem.paragraph
+      expect(page).to have_css('.checkbox')
+      check 'Private wiki'
+      click_button 'Save'
+      expect(page).to have_current_path(topic_wiki_path(@wiki.topic, 3))
+      expect(page).to have_content sentence
+      expect(page).to have_content private_tag
+    end
+    
+    it "Edits Private Wikis" do
+      visit_private_wiki
+      expect(page).to have_content private_tag
+      click_link 'Edit'
+      expect(page).to have_current_path(edit_topic_wiki_path(@private_wiki.topic, @private_wiki.id))
+      fill_in 'Title', with: private_updated_sentence
+      click_button 'Save'
+      expect(page).to have_content private_updated_sentence
+      expect(page).to have_current_path(topic_wiki_path(@private_wiki.topic, @private_wiki.id))
+    end
+
+    it "Deletes Private Wiki" do
+      visit_private_wiki
+      expect(page).to have_content private_tag
+      click_link "Delete Wiki"
+      expect(page).to have_current_path(topic_path(private_topic.id))
+      expect(page).to have_content "\"#{private_sentence}\"  was deleted successfully."
+    end
   end
 end
 
@@ -205,9 +277,22 @@ end
 
 
 private
-def visit_wiki
-  visit topics_path
-  click_link topic.name
-  click_link sentence
-  expect(page).to have_current_path(topic_wiki_path(@wiki.topic, @wiki.id))
-end
+  def visit_wiki
+    visit topics_path
+    click_link topic.name
+    click_link sentence
+    expect(page).to have_current_path(topic_wiki_path(@wiki.topic, @wiki.id))
+  end
+  
+  def visit_private_wiki
+    visit topics_path
+    click_link private_topic.name
+    click_link private_sentence
+    expect(page).to have_current_path(topic_wiki_path(@private_wiki.topic, @private_wiki.id))
+  end
+  
+  def new_wiki
+    visit topics_path
+    click_link topic.name
+    expect(page).to have_current_path(topic_path(topic.id))
+  end

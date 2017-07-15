@@ -1,6 +1,7 @@
 class WikisController < ApplicationController
 
-  before_action :require_sign_in, except: :show
+  #FIXME    the is a problem with authorization and authentication
+  before_action :require_sign_in, except: [:index, :show]
 
   before_action :authorize_user, except: [:show, :new, :create]
 
@@ -10,6 +11,7 @@ class WikisController < ApplicationController
 
   def show
     @wiki = Wiki.find(params[:id])
+    authorize @wiki
   end
 
   def new
@@ -66,7 +68,7 @@ class WikisController < ApplicationController
 
   private
   def wiki_params
-    params.require(:wiki).permit(:title, :body)
+    params.require(:wiki).permit(:title, :body, :private)
   end
 
   def authorize_user
