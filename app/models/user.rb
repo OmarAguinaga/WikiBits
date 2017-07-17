@@ -1,6 +1,9 @@
 class User < ApplicationRecord
 
   has_many :wikis, dependent: :destroy
+  has_many :collaborators
+  has_many :wikis, :through => :collaborators
+
   before_save { self.role ||= :standar }
 
   # Include default devise modules. Others available are:
