@@ -8,8 +8,20 @@
       <li>Don't use the letter "A".</li>
       <li>The incessant use of hashtags will get you banned.</li>
     </ul>
+    <div class="form-group">
+      <p>Collaborators</p>
+      <% collaborator_user_ids= @wiki.collaborator_user_ids %>
+      <%# this should more properly use a variable set in your controller rather than User.all - for example you might want to limit the list of possible collaborators according to some condition %>
+      <% User.all.each do |user| %>
+      <div class="user">
+        <%= check_box_tag "wiki[collaborator_user_ids][]", user.id, collaborator_user_ids.include?(user.id) %>
+        <%= user.username %>
+      </div>
+      <% end %>
+    </div>
   </div>
   <div class="col-md-8">
     <%= render partial: 'form',locals: { topic: @wiki.topic, wiki: @wiki }  %>
   </div>
+
 </div>

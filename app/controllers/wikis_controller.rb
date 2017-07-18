@@ -6,7 +6,8 @@ class WikisController < ApplicationController
   before_action :authorize_user, except: [:show, :new, :create]
 
   def index
-    @wikis = Wiki.all
+    #@wikis = Wiki.all
+    @wikis = policy_scope(Wiki)
   end
 
   def show
@@ -42,6 +43,8 @@ class WikisController < ApplicationController
 
   def update
     @wiki = Wiki.find(params[:id])
+    puts('These are the params' )
+    puts(params[:collaborator_user_ids])
     @wiki.assign_attributes(wiki_params)
 
 
@@ -68,7 +71,7 @@ class WikisController < ApplicationController
 
   private
   def wiki_params
-    params.require(:wiki).permit(:title, :body, :private)
+    params.require(:wiki).permit(:title, :body, :private, :collaborator_user_ids)
   end
 
   def authorize_user
